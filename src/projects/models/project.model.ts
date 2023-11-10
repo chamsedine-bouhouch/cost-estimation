@@ -17,6 +17,12 @@ export class Project {
   @ApiProperty({ enum: projectTypeEnum })
   @Prop({ type: String, enum: projectTypeEnum })
   type: projectTypeEnum;
+
+  @Prop()
+  answers: [
+    question_id: { type: mongoose.Schema.Types.ObjectId },
+    answer: string,
+  ];
 }
 
 export const ProjectSchema = SchemaFactory.createForClass(Project);

@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Patch } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { Project } from './models/project.model';
-import { CreateProjectDto } from './dtos/create-project.dto';
+import { CreateAnswerDto, CreateProjectDto } from './dtos/create-project.dto';
 
 @Controller('projects')
 export class ProjectsController {
@@ -19,5 +19,10 @@ export class ProjectsController {
   @Get('/:id')
   getProject(@Param('id') id: string) {
     return this.projectsService.findOne(id);
+  }
+
+  @Patch('/:id')
+  update(@Param('id') id: string, @Body() createAnswerDto: CreateAnswerDto) {
+    return this.projectsService.addAnswerToProject(id, createAnswerDto);
   }
 }
