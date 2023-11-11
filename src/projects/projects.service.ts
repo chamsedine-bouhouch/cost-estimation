@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Project } from './models/project.model';
+import { Answer, Project } from './models/project.model';
 import { Model } from 'mongoose';
 import { CreateAnswerDto, CreateProjectDto } from './dtos/create-project.dto';
 
@@ -23,11 +23,35 @@ export class ProjectsService {
     return this.projectModel.findById(projectId);
   }
 
-  async addAnswerToProject(isProject: string, answer: CreateAnswerDto) {
-    await this.projectModel.findByIdAndUpdate(
-      { _id: isProject },
+  async addAnswerToProject(
+    idProject: string,
+    answer: CreateAnswerDto,
+  ): Promise<Project> {
+    return await this.projectModel.findByIdAndUpdate(
+      { _id: idProject },
       { $push: { answers: answer } },
     );
+  }
+
+  async deleteAnswerFromProject(projectId: string, questionId: string) {
+    const answer = this.getAnswer(projectId, questionId);
+    const updatedProject = await this.projectModel.findByIdAndUpdate(
+      { _id: projectId },
+      {
+        $pull: {
+          answers: answer,
+        },
+      },
+    );
+    return updatedProject;
+  }
+
+  async getAnswer(projectId: string, questionId: string): Promise<Answer> {
+    const project = await this.projectModel.findById(projectId);
+    const answer = project.answers.find(
+      (a) => a.question_id.toString() == questionId,
+    );
+    return answer;
   }
 
   async deleteProject(projectId: string) {

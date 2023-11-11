@@ -16,7 +16,7 @@ export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 
   @Get()
-  projectList() {
+  getProjects() {
     return this.projectsService.findAll();
   }
 
@@ -33,6 +33,11 @@ export class ProjectsController {
   @Patch('/:id')
   update(@Param('id') id: string, @Body() createAnswerDto: CreateAnswerDto) {
     return this.projectsService.addAnswerToProject(id, createAnswerDto);
+  }
+
+  @Patch('/:id/remove-answer')
+  removeAnswer(@Param('id') id: string, @Body() questionId: string) {
+    return this.projectsService.deleteAnswerFromProject(id, questionId);
   }
 
   @Delete('/:id')

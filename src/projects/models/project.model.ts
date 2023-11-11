@@ -19,10 +19,11 @@ export class Project {
   type: projectTypeEnum;
 
   @Prop()
-  answers: [
-    question_id: { type: mongoose.Schema.Types.ObjectId },
-    answer: string,
-  ];
+  answers: [Answer];
 }
 
+export class Answer {
+  question_id: { type: mongoose.Schema.Types.ObjectId };
+  answer: string;
+}
 export const ProjectSchema = SchemaFactory.createForClass(Project);
