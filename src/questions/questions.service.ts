@@ -20,6 +20,10 @@ export class QuestionsService {
     return createdQuestion.save();
   }
 
+  async getQuestion(questionId): Promise<Question> {
+    return await this.questionModel.findById(questionId);
+  }
+
   async getQuestionsByType(projectType: projectTypeEnum): Promise<Question[]> {
     // Use the promise-based approach to find questions by type
     const questions = await this.questionModel.find({

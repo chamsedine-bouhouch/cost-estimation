@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param, Query } from '@nestjs/common';
 import { QuestionsService } from './questions.service';
 import { CreateQuestionDto } from './dtos/create-question.dto';
 import { Question } from './models/question.model';
@@ -18,6 +18,11 @@ export class QuestionsController {
     @Body() createQuestionDto: CreateQuestionDto,
   ): Promise<Question> {
     return this.questionService.create(createQuestionDto);
+  }
+
+  @Get('/:id')
+  getQuestion(@Param('id') id: string) {
+    return this.questionService.getQuestion(id);
   }
 
   @Get('/:project_type')

@@ -9,6 +9,11 @@
     },
     {
         "name": "Project Type ?",
-        "project_type": "Commun"
+        "project_type": "Commun",
+        "options": [
+            "Web",
+            "Mobile",
+            "Design"
+        ]
     }
 ]

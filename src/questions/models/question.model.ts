@@ -20,6 +20,9 @@ export class Question {
     default: QuestionTypeEnum.Text,
   })
   question_type: QuestionTypeEnum;
+
+  @Prop()
+  options: [string];
 }
 
 export const QuestionSchema = SchemaFactory.createForClass(Question);

@@ -5,7 +5,8 @@
    - name & email ( later for registred users)
    - select type of the project
    - get questions
-   - add Answers 
+   - add Answer
+   - delete Answer 
 
 5. Question Types
    - QCM
