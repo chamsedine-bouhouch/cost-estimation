@@ -16,7 +16,7 @@ export class Project {
 
   @ApiProperty({ enum: projectTypeEnum })
   @Prop({ type: String, enum: projectTypeEnum })
-  type: projectTypeEnum;
+  project_type: projectTypeEnum;
 
   @Prop()
   answers: [Answer];
