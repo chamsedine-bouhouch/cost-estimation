@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Answer, Project } from './models/project.model';
 import { Model } from 'mongoose';
 import { CreateAnswerDto, CreateProjectDto } from './dtos/create-project.dto';
+import { UpdateProjectDto } from './dtos/update-project.dto';
 
 @Injectable()
 export class ProjectsService {
@@ -23,12 +24,28 @@ export class ProjectsService {
     return this.projectModel.findById(projectId);
   }
 
+  async update(
+    projectId: string,
+    updateProjectDto: UpdateProjectDto,
+  ): Promise<Project> {
+    return await this.projectModel.findByIdAndUpdate(
+      projectId,
+      updateProjectDto,
+      { new: true },
+    );
+  }
+
+  async deleteProject(projectId: string) {
+    return this.projectModel.findByIdAndDelete(projectId);
+  }
+
+  // Answers Management
   async addAnswerToProject(
-    idProject: string,
+    projectId: string,
     answer: CreateAnswerDto,
   ): Promise<Project> {
     return await this.projectModel.findByIdAndUpdate(
-      { _id: idProject },
+      { _id: projectId },
       { $push: { answers: answer } },
     );
   }
@@ -52,9 +69,5 @@ export class ProjectsService {
       (a) => a.question_id.toString() == questionId,
     );
     return answer;
-  }
-
-  async deleteProject(projectId: string) {
-    return this.projectModel.findByIdAndDelete(projectId);
   }
 }

@@ -10,6 +10,7 @@ import {
 import { ProjectsService } from './projects.service';
 import { Project } from './models/project.model';
 import { CreateAnswerDto, CreateProjectDto } from './dtos/create-project.dto';
+import { UpdateProjectDto } from './dtos/update-project.dto';
 
 @Controller('projects')
 export class ProjectsController {
@@ -30,8 +31,13 @@ export class ProjectsController {
     return this.projectsService.findOne(id);
   }
 
+  @Patch('/:id')
+  update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {
+    return this.projectsService.update(id, updateProjectDto);
+  }
+
   @Patch('/:id/add-answer')
-  update(@Param('id') id: string, @Body() createAnswerDto: CreateAnswerDto) {
+  addAnswer(@Param('id') id: string, @Body() createAnswerDto: CreateAnswerDto) {
     return this.projectsService.addAnswerToProject(id, createAnswerDto);
   }
 
