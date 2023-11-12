@@ -20,16 +20,16 @@ export class QuestionsController {
     return this.questionService.create(createQuestionDto);
   }
 
-  @Get('/:id')
-  getQuestion(@Param('id') id: string) {
-    return this.questionService.getQuestion(id);
-  }
-
-  @Get('/:project_type')
+  @Get('/project_type')
   @ApiQuery({ name: 'project_type', enum: projectTypeEnum })
   getQuestionByType(
     @Query('project_type') project_type: projectTypeEnum = projectTypeEnum.Web,
   ) {
     return this.questionService.getQuestionsByType(project_type);
+  }
+
+  @Get('/:id')
+  getQuestion(@Param('id') id: string) {
+    return this.questionService.getQuestion(id);
   }
 }
