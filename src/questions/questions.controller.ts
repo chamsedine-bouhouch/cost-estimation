@@ -20,11 +20,11 @@ export class QuestionsController {
     return this.questionService.create(createQuestionDto);
   }
 
-  @Get('/:type')
-  @ApiQuery({ name: 'type', enum: projectTypeEnum })
+  @Get('/:project_type')
+  @ApiQuery({ name: 'project_type', enum: projectTypeEnum })
   getQuestionByType(
-    @Query('type') type: projectTypeEnum = projectTypeEnum.Web,
+    @Query('project_type') project_type: projectTypeEnum = projectTypeEnum.Web,
   ) {
-    return this.questionService.getQuestionsByType(type);
+    return this.questionService.getQuestionsByType(project_type);
   }
 }

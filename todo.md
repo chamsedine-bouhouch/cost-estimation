@@ -6,3 +6,7 @@
    - select type of the project
    - get questions
    - add Answers 
+
+5. Question Types
+   - QCM
+   - Text

@@ -22,7 +22,9 @@ export class QuestionsService {
 
   async getQuestionsByType(projectType: projectTypeEnum): Promise<Question[]> {
     // Use the promise-based approach to find questions by type
-    const questions = await this.questionModel.find({ type: projectType });
+    const questions = await this.questionModel.find({
+      project_type: projectType,
+    });
     return questions;
   }
 }
