@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Question } from './models/question.model';
 import { Model } from 'mongoose';
 import { CreateQuestionDto } from './dtos/create-question.dto';
+import { projectTypeEnum } from 'src/core/enums/projectTypeEnum';
 
 @Injectable()
 export class QuestionsService {
@@ -17,5 +18,11 @@ export class QuestionsService {
   async create(createQuestionDto: CreateQuestionDto): Promise<Question> {
     const createdQuestion = new this.questionModel(createQuestionDto);
     return createdQuestion.save();
+  }
+
+  async getQuestionsByType(projectType: projectTypeEnum): Promise<Question[]> {
+    // Use the promise-based approach to find questions by type
+    const questions = await this.questionModel.find({ type: projectType });
+    return questions;
   }
 }

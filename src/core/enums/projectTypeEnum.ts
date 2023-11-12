@@ -1,5 +1,5 @@
 export enum projectTypeEnum {
-  Web,
-  Mobile,
-  Design,
+  Web = 'Web',
+  Mobile = 'Mobile',
+  Design = 'Design',
 }

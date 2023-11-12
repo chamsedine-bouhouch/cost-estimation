@@ -1,6 +1,8 @@
 1. uml
-2. create a project
-   - name & email
+2. create Question   (Done)
+3. get the project type questions list (Done)
+4. create a project
+   - name & email ( later for registred users)
    - select type of the project
-   - get the project type questions list
-   - save answer 
+   - get questions
+   - add Answers 

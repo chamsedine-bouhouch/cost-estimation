@@ -30,7 +30,7 @@ export class ProjectsController {
     return this.projectsService.findOne(id);
   }
 
-  @Patch('/:id')
+  @Patch('/:id/add-answer')
   update(@Param('id') id: string, @Body() createAnswerDto: CreateAnswerDto) {
     return this.projectsService.addAnswerToProject(id, createAnswerDto);
   }
