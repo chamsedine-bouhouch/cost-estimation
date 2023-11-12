@@ -4,8 +4,14 @@
     "project_type": "Web",
     "answers": [
         {
+            "question_id": "65510d5c6f8438d6af70bc5c",
+            "answer": "Web",
+            "weight": 1
+        },
+        {
             "question_id": "6550e84b6c562b124947a833",
-            "answer": "30/12/2023"
+            "answer": "30/12/2023",
+            "weight": 1
         }
     ]
 }

@@ -5,11 +5,14 @@
     },
     {
         "name": "Project Deadline ?",
-        "project_type": "Commun"
+        "project_type": "Commun",
+        "wight": 200
     },
     {
         "name": "Project Type ?",
         "project_type": "Commun",
+        "weight": 100,
+        "question_type": "QCM",
         "options": [
             "Web",
             "Mobile",

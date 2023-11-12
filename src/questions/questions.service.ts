@@ -31,4 +31,12 @@ export class QuestionsService {
     });
     return questions;
   }
+
+  async getQuestionsByIds(questionIds: string[]): Promise<Question[]> {
+    // Assuming your Question model is used here
+    const questions = await this.questionModel
+      .find({ _id: { $in: questionIds } })
+      .exec();
+    return questions;
+  }
 }

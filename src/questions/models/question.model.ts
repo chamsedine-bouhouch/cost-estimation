@@ -21,6 +21,9 @@ export class Question {
   })
   question_type: QuestionTypeEnum;
 
+  @Prop({ type: Number, required: true })
+  weight: number;
+
   @Prop()
   options: [string];
 }

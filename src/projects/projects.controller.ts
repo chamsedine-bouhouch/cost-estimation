@@ -30,6 +30,15 @@ export class ProjectsController {
   getProject(@Param('id') id: string) {
     return this.projectsService.findOne(id);
   }
+  @Get('/:id/calculateWeightedScore')
+  calculateWeightedScore(@Param('id') projectId: string) {
+    return this.projectsService.calculateWeightedScore(projectId);
+  }
+
+  @Get('/:id/answer/:questionId')
+  getAnswer(@Param('id') id: string, @Param('questionId') questionId: string) {
+    return this.projectsService.getAnswer(id, questionId);
+  }
 
   @Patch('/:id')
   update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {

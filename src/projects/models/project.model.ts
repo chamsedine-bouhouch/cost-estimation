@@ -3,6 +3,18 @@ import { ApiProperty } from '@nestjs/swagger';
 import mongoose from 'mongoose';
 import { projectTypeEnum } from 'src/core/enums/projectTypeEnum';
 
+@Schema()
+export class Answer {
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: () => 'Question' })
+  question_id: string;
+
+  @Prop({ type: String, required: true })
+  answer: string;
+
+  @Prop({ type: Number, default: 1 })
+  weight: number;
+}
+
 @Schema({
   timestamps: true,
 })
@@ -18,12 +30,11 @@ export class Project {
   @Prop({ type: String, enum: projectTypeEnum })
   project_type: projectTypeEnum;
 
+  @Prop([Answer])
+  answers: Answer[];
+
   @Prop()
-  answers: [Answer];
+  score: number;
 }
 
-export class Answer {
-  question_id: { type: mongoose.Schema.Types.ObjectId };
-  answer: string;
-}
 export const ProjectSchema = SchemaFactory.createForClass(Project);

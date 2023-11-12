@@ -4,11 +4,13 @@ import { Answer, Project } from './models/project.model';
 import { Model } from 'mongoose';
 import { CreateAnswerDto, CreateProjectDto } from './dtos/create-project.dto';
 import { UpdateProjectDto } from './dtos/update-project.dto';
+import { QuestionsService } from 'src/questions/questions.service';
 
 @Injectable()
 export class ProjectsService {
   constructor(
     @InjectModel(Project.name) private readonly projectModel: Model<Project>,
+    private readonly questionService: QuestionsService,
   ) {}
 
   async findAll(): Promise<Project[]> {
@@ -21,7 +23,18 @@ export class ProjectsService {
   }
 
   async findOne(projectId: string): Promise<Project> {
-    return this.projectModel.findById(projectId);
+    // Use the model type to specify the result type of findById
+    const project = await this.projectModel
+      .findById<Project>(projectId)
+      .populate('answers.question_id');
+
+    // Calculate the weighted score asynchronously
+    const score = await this.calculateWeightedScore(projectId);
+
+    // Add the calculated score to the project
+    project.score = score;
+
+    return project;
   }
 
   async update(
@@ -69,5 +82,30 @@ export class ProjectsService {
       (a) => a.question_id.toString() == questionId,
     );
     return answer;
+  }
+
+  async calculateWeightedScore(projectId: string): Promise<number> {
+    const project = await this.projectModel
+      .findById(projectId)
+      .select('answers')
+      .lean()
+      .exec();
+    const answerIds = project.answers.map((answer: any) => answer.question_id);
+    const questions = await this.questionService.getQuestionsByIds(answerIds);
+
+    const weightedScore = project.answers.reduce(
+      (totalWeightedScore: number, answer: any) => {
+        const questionWeight = questions.find(
+          (question: any) =>
+            question._id.toString() === answer.question_id.toString(),
+        ).weight;
+
+        totalWeightedScore += questionWeight * answer.weight;
+        return totalWeightedScore;
+      },
+      0,
+    );
+
+    return weightedScore;
   }
 }
