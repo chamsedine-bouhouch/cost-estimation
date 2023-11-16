@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Project } from './models/project.model';
 import { Model } from 'mongoose';
@@ -14,7 +18,7 @@ export class ProjectsService {
     private readonly questionService: QuestionsService,
   ) {}
 
-  async findAll(): Promise<Project[]> {
+  async getProjects(): Promise<Project[]> {
     return this.projectModel.find().exec();
   }
 
@@ -23,11 +27,15 @@ export class ProjectsService {
     return createdProject.save();
   }
 
-  async findOne(projectId: string): Promise<Project> {
+  async getProject(projectId: string): Promise<Project> {
     // Use the model type to specify the result type of findById
     const project = await this.projectModel
       .findById<Project>(projectId)
       .populate('answers.question_id');
+
+    if (!project) {
+      throw new NotFoundException('Project not found');
+    }
 
     // Calculate the weighted score asynchronously
     const score = await this.calculateWeightedScore(projectId);
@@ -38,7 +46,7 @@ export class ProjectsService {
     return project;
   }
 
-  async update(
+  async updateProject(
     projectId: string,
     updateProjectDto: UpdateProjectDto,
   ): Promise<Project> {
@@ -49,8 +57,12 @@ export class ProjectsService {
     );
   }
 
-  async deleteProject(projectId: string) {
-    return this.projectModel.findByIdAndDelete(projectId);
+  async deleteProject(projectId: string): Promise<void> {
+    const project = await this.projectModel.findByIdAndDelete(projectId);
+
+    if (!project) {
+      throw new NotFoundException('Project not found');
+    }
   }
 
   // Answers Management
@@ -65,7 +77,10 @@ export class ProjectsService {
     });
 
     if (existingAnswer) {
-      throw new Error('Duplicate question_id found. Answer cannot be added.');
+      throw new BadRequestException('Duplicate Answer Error', {
+        cause: new Error(),
+        description: 'Duplicate question_id found. Answer cannot be added.',
+      });
     }
 
     // Add the new answer if question_id is unique
@@ -76,23 +91,45 @@ export class ProjectsService {
   }
 
   async deleteAnswerFromProject(projectId: string, questionId: string) {
-    const answer = this.getAnswer(projectId, questionId);
-    const updatedProject = await this.projectModel.findByIdAndUpdate(
-      { _id: projectId },
-      {
-        $pull: {
-          answers: answer,
+    try {
+      const answer = await this.getAnswer(projectId, questionId);
+
+      const updatedProject = await this.projectModel.findByIdAndUpdate(
+        { _id: projectId },
+        {
+          $pull: {
+            answers: answer,
+          },
         },
-      },
-    );
-    return updatedProject;
+      );
+
+      return updatedProject;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        console.error('Answer not found for this project');
+        return null;
+      } else {
+        console.error('Unexpected error:', error);
+        return null;
+      }
+    }
   }
 
   async getAnswer(projectId: string, questionId: string): Promise<Answer> {
-    const project = await this.projectModel.findById(projectId);
+    const project = await this.getProject(projectId);
+
+    if (project.answers.length === 0) {
+      throw new NotFoundException('No answers found for this project');
+    }
+
     const answer = project.answers.find(
-      (a) => a.question_id.toString() == questionId,
+      (a) => a.question_id.toString() === questionId,
     );
+
+    if (!answer) {
+      throw new NotFoundException('Answer not found');
+    }
+
     return answer;
   }
 

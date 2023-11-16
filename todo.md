@@ -16,5 +16,9 @@
    - calculate weightedScore
 
 7. A Question can have only one Answer (Done)
-8. use answerId for answer management
-9. User can edit the estimation params
+8. Project Exception management
+   - not found project
+   - not found answer
+   - duplicate answer
+9.  use answerId for answer management
+10. User can edit the estimation params

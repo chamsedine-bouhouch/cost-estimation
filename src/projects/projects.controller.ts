@@ -1,14 +1,14 @@
 import {
+  Body,
   Controller,
   Get,
-  Post,
-  Body,
   Param,
   Patch,
+  Post,
   Delete,
 } from '@nestjs/common';
-import { ProjectsService } from './projects.service';
 import { Project } from './models/project.model';
+import { ProjectsService } from './projects.service';
 import { CreateAnswerDto, CreateProjectDto } from './dtos/create-project.dto';
 import { UpdateProjectDto } from './dtos/update-project.dto';
 
@@ -18,7 +18,7 @@ export class ProjectsController {
 
   @Get()
   getProjects() {
-    return this.projectsService.findAll();
+    return this.projectsService.getProjects();
   }
 
   @Post()
@@ -28,7 +28,7 @@ export class ProjectsController {
 
   @Get('/:id')
   getProject(@Param('id') id: string) {
-    return this.projectsService.findOne(id);
+    return this.projectsService.getProject(id);
   }
   @Get('/:id/calculateWeightedScore')
   calculateWeightedScore(@Param('id') projectId: string) {
@@ -41,8 +41,11 @@ export class ProjectsController {
   }
 
   @Patch('/:id')
-  update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {
-    return this.projectsService.update(id, updateProjectDto);
+  updateProject(
+    @Param('id') id: string,
+    @Body() updateProjectDto: UpdateProjectDto,
+  ) {
+    return this.projectsService.updateProject(id, updateProjectDto);
   }
 
   @Patch('/:id/add-answer')
@@ -56,7 +59,7 @@ export class ProjectsController {
   }
 
   @Delete('/:id')
-  remove(@Param('id') id: string) {
+  deleteProject(@Param('id') id: string) {
     return this.projectsService.deleteProject(id);
   }
 }
