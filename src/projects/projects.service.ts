@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Answer, Project } from './models/project.model';
+import { Project } from './models/project.model';
 import { Model } from 'mongoose';
 import { CreateAnswerDto, CreateProjectDto } from './dtos/create-project.dto';
 import { UpdateProjectDto } from './dtos/update-project.dto';
 import { QuestionsService } from 'src/questions/questions.service';
+import { Answer } from './models/answer.model';
 
 @Injectable()
 export class ProjectsService {
@@ -57,6 +58,17 @@ export class ProjectsService {
     projectId: string,
     answer: CreateAnswerDto,
   ): Promise<Project> {
+    // Check if the question_id already exists
+    const existingAnswer = await this.projectModel.findOne({
+      _id: projectId,
+      'answers.question_id': answer.question_id,
+    });
+
+    if (existingAnswer) {
+      throw new Error('Duplicate question_id found. Answer cannot be added.');
+    }
+
+    // Add the new answer if question_id is unique
     return await this.projectModel.findByIdAndUpdate(
       { _id: projectId },
       { $push: { answers: answer } },

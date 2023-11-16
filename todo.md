@@ -10,11 +10,11 @@
    - get questions
    - add Answer
    - delete Answer 
-6. Weight Estimation System
+6. Weight Estimation (System Done)
    - question weight
    - answer weight 
    - calculate weightedScore
 
-7. A Question can have only one Answer
+7. A Question can have only one Answer (Done)
 8. use answerId for answer management
 9. User can edit the estimation params
