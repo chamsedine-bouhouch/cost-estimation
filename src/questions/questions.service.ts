@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Question } from './models/question.model';
 import { Model } from 'mongoose';
 import { CreateQuestionDto } from './dtos/create-question.dto';
-import { projectTypeEnum } from 'src/core/enums/projectTypeEnum';
+import { ProjectTypeEnum } from 'src/core/enums/projectTypeEnum';
 
 @Injectable()
 export class QuestionsService {
@@ -11,20 +11,26 @@ export class QuestionsService {
     @InjectModel(Question.name) private readonly questionModel: Model<Question>,
   ) {}
 
-  async findAll(): Promise<Question[]> {
+  async getQuestions(): Promise<Question[]> {
     return this.questionModel.find().exec();
   }
 
-  async create(createQuestionDto: CreateQuestionDto): Promise<Question> {
+  async createQuestion(
+    createQuestionDto: CreateQuestionDto,
+  ): Promise<Question> {
     const createdQuestion = new this.questionModel(createQuestionDto);
     return createdQuestion.save();
   }
 
   async getQuestion(questionId): Promise<Question> {
-    return await this.questionModel.findById(questionId);
+    const question = await this.questionModel.findById(questionId);
+    if (!question) {
+      throw new NotFoundException('Question not found');
+    }
+    return question;
   }
 
-  async getQuestionsByType(projectType: projectTypeEnum): Promise<Question[]> {
+  async getQuestionsByType(projectType: ProjectTypeEnum): Promise<Question[]> {
     // Use the promise-based approach to find questions by type
     const questions = await this.questionModel.find({
       project_type: projectType,

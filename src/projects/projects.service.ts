@@ -3,13 +3,14 @@ import {
   BadRequestException,
   NotFoundException,
 } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Project } from './models/project.model';
 import { Model } from 'mongoose';
-import { CreateAnswerDto, CreateProjectDto } from './dtos/create-project.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Answer } from './models/answer.model';
+import { Project } from './models/project.model';
+import { CreateProjectDto } from './dtos/create-project.dto';
+import { CreateAnswerDto } from './dtos/create-answer.dto';
 import { UpdateProjectDto } from './dtos/update-project.dto';
 import { QuestionsService } from 'src/questions/questions.service';
-import { Answer } from './models/answer.model';
 
 @Injectable()
 export class ProjectsService {
@@ -28,19 +29,22 @@ export class ProjectsService {
   }
 
   async getProject(projectId: string): Promise<Project> {
-    // Use the model type to specify the result type of findById
     const project = await this.projectModel
       .findById<Project>(projectId)
-      .populate('answers.question_id');
+      .populate({
+        path: 'answers',
+        populate: {
+          path: 'question_id',
+          model: 'Question', // Make sure to replace 'Question' with the actual name of your Question model
+        },
+      })
+      .exec();
 
     if (!project) {
       throw new NotFoundException('Project not found');
     }
 
-    // Calculate the weighted score asynchronously
     const score = await this.calculateWeightedScore(projectId);
-
-    // Add the calculated score to the project
     project.score = score;
 
     return project;

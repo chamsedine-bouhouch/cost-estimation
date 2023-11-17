@@ -1,4 +1,4 @@
-export enum projectTypeEnum {
+export enum ProjectTypeEnum {
   Web = 'Web',
   Mobile = 'Mobile',
   Design = 'Design',

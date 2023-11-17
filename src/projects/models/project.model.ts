@@ -15,6 +15,7 @@ export class Project {
 
   @Prop({ type: [Object] })
   answers: Answer[];
+
   @Prop()
   score: number;
 }

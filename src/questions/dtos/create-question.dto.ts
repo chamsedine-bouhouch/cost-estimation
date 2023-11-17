@@ -1,7 +1,7 @@
-import { projectTypeEnum } from 'src/core/enums/projectTypeEnum';
+import { ProjectTypeEnum } from 'src/core/enums/projectTypeEnum';
 
 export class CreateQuestionDto {
   name: string;
-  project_type: projectTypeEnum;
+  project_type: ProjectTypeEnum;
   options: [string];
 }
