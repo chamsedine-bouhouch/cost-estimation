@@ -1,7 +1,6 @@
-import { ProjectTypeEnum } from 'src/core/enums/projectTypeEnum';
-
+import { Category } from 'src/categories/models/category.model';
 export class CreateQuestionDto {
   name: string;
-  project_type: ProjectTypeEnum;
+  project_category: Category;
   options: [string];
 }

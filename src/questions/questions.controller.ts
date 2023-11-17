@@ -1,9 +1,7 @@
-import { Body, Controller, Get, Post, Param, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param } from '@nestjs/common';
 import { QuestionsService } from './questions.service';
 import { CreateQuestionDto } from './dtos/create-question.dto';
 import { Question } from './models/question.model';
-import { ProjectTypeEnum } from 'src/core/enums/projectTypeEnum';
-import { ApiQuery } from '@nestjs/swagger';
 
 @Controller('questions')
 export class QuestionsController {
@@ -25,11 +23,8 @@ export class QuestionsController {
     return this.questionService.getQuestion(id);
   }
 
-  @Get('/project_type')
-  @ApiQuery({ name: 'project_type', enum: ProjectTypeEnum })
-  getQuestionsByType(
-    @Query('project_type') project_type: ProjectTypeEnum = ProjectTypeEnum.Web,
-  ) {
-    return this.questionService.getQuestionsByType(project_type);
+  @Get('/project_type/:id')
+  getQuestionsByType(@Param('id') projectCategory: string) {
+    return this.questionService.getQuestionsByType(projectCategory);
   }
 }
