@@ -1,16 +1,23 @@
 Collections:
 
 Users:
+
+```
 _id (ObjectId)
 username (String)
 type (String)
+```
 Projects:
+
+```
 _id (ObjectId)
 user_id (ObjectId)
 project_type (String)
 answers (Array of Objects)
+```
 Document structure:
 
+```
 Users:
 {
   "_id": ObjectId("636f8728799f2c0100000001"),
@@ -33,3 +40,4 @@ Projects:
     }
   ]
 }
+```
