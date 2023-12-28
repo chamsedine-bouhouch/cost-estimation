@@ -1,8 +1,8 @@
 {
   "name": "cost-estimation",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "IT Projects Cost Estimation with NestJS Welcome to the IT Projects Cost Estimation repository! This open-source project aims to provide a robust and flexible solution for estimating costs in IT projects using NestJS, a powerful and extensible Node.js framework.",
+  "author": "BOUHOUCH chamseddine",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
