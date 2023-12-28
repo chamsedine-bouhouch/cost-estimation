@@ -4,6 +4,10 @@ Welcome to the IT Projects Cost Estimation repository! This open-source project 
 ## Overview
 In the dynamic landscape of IT projects, accurate cost estimation is crucial for project planning and management. This NestJS-based solution offers a scalable and modular platform for estimating costs, allowing developers and project managers to make informed decisions.
 
+![Image Alt text](/images/cost-estimation-api.png "Cost Estimation Swagger API")
+![Image Alt text](/images/cost-estimation-api-2.png "Cost Estimation Swagger API 2")
+
+
 ## Key Features
 - **NestJS Framework:** Built on the foundation of NestJS, a framework known for its modularity, scalability, and ease of maintenance.
 
